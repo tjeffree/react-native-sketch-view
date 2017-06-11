@@ -17,7 +17,6 @@ class SketchView extends Component {
   }
 
   onChange(event) {
-    console.log('save event: ',event.nativeEvent);
     if (event.nativeEvent.type === "onSaveSketch") {
 
       if (!this.props.onSaveSketch) {
