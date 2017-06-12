@@ -28,6 +28,15 @@ class SketchView extends Component {
         imageWidth: event.nativeEvent.event.imageWidth,
         imageHeight: event.nativeEvent.event.imageHeight
       });
+    } else if (event.nativeEvent.type === "onExportSketch") {
+
+      if (!this.props.onExportSketch) {
+        return;
+      }
+
+      this.props.onExportSketch({
+        base64Encoded: event.nativeEvent.event.base64Encoded,
+      });
     }
   }
 
@@ -36,6 +45,13 @@ class SketchView extends Component {
       let sub = DeviceEventEmitter.addListener(
         'onSaveSketch',
         this.props.onSaveSketch
+      );
+      this.subscriptions.push(sub);
+    }
+    if (this.props.onExportSketch) {
+      let sub = DeviceEventEmitter.addListener(
+        'onExportSketch',
+        this.props.onExportSketch
       );
       this.subscriptions.push(sub);
     }
@@ -64,6 +80,14 @@ class SketchView extends Component {
     UIManager.dispatchViewManagerCommand(
       findNodeHandle(this),
       UIManager.RNSketchView.Commands.saveSketch,
+      [],
+    );
+  }
+
+  exportSketch() {
+    UIManager.dispatchViewManagerCommand(
+      findNodeHandle(this),
+      UIManager.RNSketchView.Commands.exportSketch,
       [],
     );
   }
